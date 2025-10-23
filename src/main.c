@@ -16,7 +16,7 @@ int main() {
   int size = lseek(fd, 0, SEEK_END);
   lseek(fd, 0, SEEK_SET);
   char buf[size];
-  read(fd, &buf, size);
+  read(fd, buf, size);
 
   /*Prueba a escribirlo en otro fichero*/
   int fd2 = creat("Salida.txt", 0777);
@@ -27,7 +27,13 @@ int main() {
    * nuevos strings, se crean con un bucle simple, y luego analizar dichos
    * strings., también se puede arreglar comparando caracter a caractér,
    * probablemente nos de menos problemas */
-
+  int i = 0;
+  while (buf[i] != '\0') {
+    /* Aquí se llamaría a otro método que almacene un puntero a string, cuyos
+     * strings sean los tokens*/
+    printf("%c", buf[i]);
+    i++;
+  }
   if (close(fd) != 0 || close(fd2) != 0) {
     printf("El fichero se ha cerrado con un error.");
     return -1;
