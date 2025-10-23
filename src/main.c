@@ -34,6 +34,7 @@ int main() {
     printf("%c", buf[i]);
     i++;
   }
+
   if (close(fd) != 0 || close(fd2) != 0) {
     printf("El fichero se ha cerrado con un error.");
     return -1;
