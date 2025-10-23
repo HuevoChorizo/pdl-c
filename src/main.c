@@ -25,13 +25,12 @@ int main() {
   }
   write(fd2, buf, size);
 
-  /* Sobre buf hay que aplicar strtok, para de esta manera dividir los tokens en
-   * sus componentes <(lo que haya)>, strtok, básicamente nos permite crear
-   * nuevos strings, se crean con un bucle simple, y luego analizar dichos
-   * strings., también se puede arreglar comparando caracter a caractér,
-   * probablemente nos de menos problemas */
+  /* Básicamente recorre todo el bufer y copia los tokens a un nuevo bufer de
+   * tokens, de esta forma simplifica el trabajo del analizador, ya ha preparado
+   * el texto, solo queda comprobar si el token es un token de verdad o no.*/
   int i = 0;
   int j = 0;
+
   /* Habría que ver el tamaño máximo de token, dividir size entre este, y así
    * vas que chutas*/
   char **tokens = malloc(200 * sizeof(char *));
