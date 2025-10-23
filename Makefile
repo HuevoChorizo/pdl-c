@@ -1,6 +1,6 @@
 name=out
 #libs=
-CFLAGS=-Wall -Wextra -ansi -pedantic #$(libs)
+CFLAGS=-Wall -Wextra #$(libs)
 SRCS=$(wildcard src/*.c)
 OBJS=$(SRCS:src/%.c=bin/%.o)
 
