@@ -1,7 +1,6 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 
 int main() {
@@ -20,6 +19,10 @@ int main() {
 
   /*Prueba a escribirlo en otro fichero*/
   int fd2 = creat("Salida.txt", 0777);
+  if (fd == -1) {
+    printf("Error al crear el archivo de salida");
+    exit(1);
+  }
   write(fd2, buf, size);
 
   /* Sobre buf hay que aplicar strtok, para de esta manera dividir los tokens en
@@ -28,12 +31,55 @@ int main() {
    * strings., también se puede arreglar comparando caracter a caractér,
    * probablemente nos de menos problemas */
   int i = 0;
+  int j = 0;
+  /* Habría que ver el tamaño máximo de token, dividir size entre este, y así
+   * vas que chutas*/
+  char **tokens = malloc(200 * sizeof(char *));
+  if (tokens == NULL) {
+    printf("Error al reservar memoria para tokens\n");
+    return 1;
+  }
+
   while (buf[i] != '\0') {
-    /* Aquí se llamaría a otro método que almacene un puntero a string, cuyos
-     * strings sean los tokens*/
-    printf("%c", buf[i]);
+    if (buf[i] == '<') {
+      tokens[j] = malloc(100 * sizeof(char));
+      if (tokens[j] == NULL) {
+        printf("Error al reservar memoria para un token\n");
+        return 1;
+      }
+
+      int k = 0;
+      while (buf[i] != '>' && buf[i] != '\0') {
+        tokens[j][k] = buf[i];
+        i++;
+        k++;
+      }
+      tokens[j][k] = '\0';
+
+      if (buf[i] == '>') {
+        tokens[j][k] = '>';
+        tokens[j][k + 1] = '\0';
+        i++;
+      }
+
+      j++;
+    } else {
+      i++;
+    }
+  }
+
+  tokens[j] = NULL;
+
+  i = 0;
+  while (tokens[i] != NULL) {
+    printf("Token %d: %s\n", i + 1, tokens[i]);
     i++;
   }
+
+  for (int i = 0; tokens[i] != NULL; i++) {
+    free(tokens[i]);
+  }
+  free(tokens);
 
   if (close(fd) != 0 || close(fd2) != 0) {
     printf("El fichero se ha cerrado con un error.");
