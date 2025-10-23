@@ -26,14 +26,19 @@ int main() {
   write(fd2, buf, size);
 
   /* Básicamente recorre todo el bufer y copia los tokens a un nuevo bufer de
-   * tokens, de esta forma simplifica el trabajo del analizador, ya ha preparado
-   * el texto, solo queda comprobar si el token es un token de verdad o no.*/
+   * tokens, de esta forma  simplifica el trabajo del analizador, ya ha
+   * preparado el texto, solo queda comprobar si el token es un token de verdad
+   * o no.*/
   int i = 0;
   int j = 0;
+  /* TODO: encontrar el tamaño del token, y de paso multiplicar por
+   * sizeof(char*)*/
+  int tamToken = 100;
 
   /* Habría que ver el tamaño máximo de token, dividir size entre este, y así
    * vas que chutas*/
-  char **tokens = malloc(200 * sizeof(char *));
+  /* TODO: cambiar el 4 por el tamaño máximo del token (eventualmente)*/
+  char **tokens = malloc(size / 4 * sizeof(char *));
   if (tokens == NULL) {
     printf("Error al reservar memoria para tokens\n");
     return 1;
@@ -41,7 +46,7 @@ int main() {
 
   while (buf[i] != '\0') {
     if (buf[i] == '<') {
-      tokens[j] = malloc(100 * sizeof(char));
+      tokens[j] = malloc(tamToken * sizeof(char));
       if (tokens[j] == NULL) {
         printf("Error al reservar memoria para un token\n");
         return 1;
