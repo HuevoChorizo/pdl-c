@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int lector() {
+char **lector() {
   int fd = open("TokensEntrada", O_RDONLY);
   if (fd == -1) {
     printf("Error al abrir el fichero\n");
@@ -39,7 +39,7 @@ int lector() {
   char **tokens = malloc(size / 4 * sizeof(char *));
   if (tokens == NULL) {
     printf("Error al reservar memoria para tokens\n");
-    return 1;
+    exit(1);
   }
 
   int i = 0, j = 0;
@@ -95,15 +95,15 @@ int lector() {
     i++;
   }
 
+  if (close(fd) != 0 || close(fd2) != 0) {
+    printf("El fichero se ha cerrado con un error.\n");
+    exit(1);
+  }
+
+  return tokens;
+
   for (int i = 0; tokens[i] != NULL; i++) {
     free(tokens[i]);
   }
   free(tokens);
-
-  if (close(fd) != 0 || close(fd2) != 0) {
-    printf("El fichero se ha cerrado con un error.\n");
-    return -1;
-  }
-
-  return 0;
 }
