@@ -47,6 +47,7 @@ char* toString(token* tok){
     printf(res);
 }
 
+//Un boolean de si es válido el token o no
 int estok_valido(token* aux_t){
     if(aux_t->id_pal==('PAL_RES'||'OP'||'EOF'))
         return 1;
