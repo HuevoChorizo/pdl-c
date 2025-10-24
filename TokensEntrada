@@ -10,6 +10,7 @@ then error(acción)
 else switch acción /* ejecuta las acciones */
 {
 case Ai: Acción semántica
+"Adrian masón \n"
 …
 }
 } /* fin del LOOP */

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main() {
+int lector() {
   int fd = open("TokensEntrada", O_RDONLY);
   if (fd == -1) {
     printf("Error al abrir el fichero\n");
@@ -56,14 +56,18 @@ int main() {
 
       /* No tengo ni puta idea de como funciona esto, es mejor no preguntar,
        * porque estaba muy cocinado mientras lo hice, pero funciona. */
+
+      /* TODO: eventualmente corregir si i+1 = size*/
       while ((buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\0') ||
              (cont != 0)) {
-        if (buf[i] == '"' || (buf[i] == '/' && buf[i + 1] == '*') ||
-            ((cont % 2 != 0) && (buf[i] == '*' && buf[i + 1] == '/'))) {
-          if (cont == 1)
-            cont--;
-          else
-            cont++;
+        if (i + 1 < size) {
+          if (buf[i] == '"' || (buf[i] == '/' && buf[i + 1] == '*') ||
+              ((cont % 2 != 0) && (buf[i] == '*' && buf[i + 1] == '/'))) {
+            if (cont == 1)
+              cont--;
+            else
+              cont++;
+          }
         }
 
         tokens[j][k] = buf[i];
