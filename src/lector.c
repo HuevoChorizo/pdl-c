@@ -17,13 +17,6 @@ char **lector() {
   char buf[size];
   read(fd, buf, size);
 
-  /* Prueba a escribirlo en otro fichero */
-  int fd2 = creat("Salida.txt", 0777);
-  if (fd2 == -1) {
-    printf("Error al crear el archivo de salida\n");
-    exit(1);
-  }
-
   /* Básicamente recorre todo el bufer y copia los tokens a un nuevo bufer de
    * tokens, de esta forma  simplifica el trabajo del analizador, ya ha
    * preparado el texto, solo queda comprobar si el token es un token de verdad
@@ -57,7 +50,6 @@ char **lector() {
       /* No tengo ni puta idea de como funciona esto, es mejor no preguntar,
        * porque estaba muy cocinado mientras lo hice, pero funciona. */
 
-      /* TODO: eventualmente corregir si i+1 = size*/
       while ((buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\0') ||
              (cont != 0)) {
         if (i + 1 < size) {
@@ -94,8 +86,7 @@ char **lector() {
     printf("Token %d: %s\n", i + 1, tokens[i]);
     i++;
   }
-
-  if (close(fd) != 0 || close(fd2) != 0) {
+  if (close(fd) != 0) {
     printf("El fichero se ha cerrado con un error.\n");
     exit(1);
   }
