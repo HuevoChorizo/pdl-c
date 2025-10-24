@@ -84,7 +84,7 @@ char **lector() {
     }
   }
 
-  tokens[j] = NULL;
+  tokens[j - 1] = NULL;
 
   for (int i = 0; tokens[i] != NULL; i++) {
   }
