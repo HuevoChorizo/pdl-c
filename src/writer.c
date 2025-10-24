@@ -26,7 +26,6 @@ char** writer(){
             cont_charman+=strlen(buf->id_pal);
             cont_chartot+=cont_charman;
             res=realloc(res,sizeof(char)*(++cont_chartot));
-            //res[cont_chartot-1]=',';
             strcat(res,',');
         }
         else if(cont_charman!=0){
