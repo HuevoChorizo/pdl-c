@@ -3,3 +3,5 @@ res
 out
 bin/*
 bin
+.vscode
+.vscode/*
