@@ -1,5 +1,7 @@
 #include "analizador.h"
 #include "lector.h"
+#include "tokens.h"
+#include "writer.h"
 #include <stdio.h>
 #include <stdlib.h>
 int main() {

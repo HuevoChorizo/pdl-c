@@ -1,21 +1,9 @@
 #ifndef TOKENS_H
 #define TOKENS_H
 
-typedef struct token_s{
-    char* id_pal;
-    int atribute;
-}token;
+typedef struct token_s {
+  char *id_pal;
+  char *atribute;
+} token;
 
-token newToken(token* tok,char* id);
-char* toString(token* tok);
-int estok_valido(token* tok);
-
-#endif  
-
-
-
-
-
-
-
-
+#endif
