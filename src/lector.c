@@ -47,9 +47,16 @@ char **lector() {
       }
       k = 0;
 
-      /* No tengo ni puta idea de como funciona esto, es mejor no preguntar,
-       * porque estaba muy cocinado mientras lo hice, pero funciona. */
-
+      /* Básicamente emplea el espacio ' ', el caracter de nueva línea '\n' y el
+       * caracter nulo como delimitadores, para hacerle el trabajo más sencillo
+       * al analizador léxico. Sin embargo, para evitar errores o pérdidas de
+       * información necesaria, dentro de los comentarios permitidos
+       * (comentarios de bloque), o dentro de un entrecomillado "", no emplea
+       * esos caracteres como delimitadores.
+       *
+       * El bucle parece complejo, pero en realidad comprueba que no haya un
+       * comentario abierto o un String "", y de haberlo, no cuenta esos
+       * caractéres como delimitadores, en el resto de los casos los emplea. */
       while ((buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\0') ||
              (cont != 0)) {
         if (i + 1 < size) {
