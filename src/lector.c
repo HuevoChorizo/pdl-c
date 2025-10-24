@@ -56,7 +56,8 @@ char **lector() {
        *
        * El bucle parece complejo, pero en realidad comprueba que no haya un
        * comentario abierto o un String "", y de haberlo, no cuenta esos
-       * caractéres como delimitadores, en el resto de los casos los emplea. */
+       * caractéres como delimitadores, en el resto de los casos les da chamba.
+       */
       while ((buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\0') ||
              (cont != 0)) {
         if (i + 1 < size) {
