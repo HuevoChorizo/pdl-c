@@ -76,16 +76,20 @@ char **lector() {
     }
   }
 
+  /*No voy a hacer un caso específico para el último token, que aumente j otra
+   * vez, sin embargo, como el último de verdad es j-2, j-1 tiene que ser
+   * null.*/
   tokens[j - 1] = NULL;
 
-  for (int i = 0; tokens[i] != NULL; i++) {
-  }
-
+  /*Esto es básicamente una comprobación de que funciona imprimiendolo, es por
+   * ello temporal y eventualmente lo borraré.*/
   i = 0;
   while (tokens[i] != NULL) {
     printf("Token %d: %s\n", i + 1, tokens[i]);
     i++;
   }
+
+  /*Cierra el fichero de entrada*/
   if (close(fd) != 0) {
     printf("El fichero se ha cerrado con un error.\n");
     exit(1);
