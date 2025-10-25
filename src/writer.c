@@ -61,5 +61,9 @@ int writer(token **tokens) {
     free(buf);
     i++;
   }
+  if (close(fd) == -1) {
+    printf("Error al cerrar el fichero\n");
+    return 1;
+  }
   return 0;
 }
