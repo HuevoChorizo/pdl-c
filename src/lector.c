@@ -41,7 +41,7 @@ char **lector() {
   while (buf[i] != '\0') {
     int cont = 0;
     int k = 0;
-    // Si encontramos un espacio, salto de línea o es el inicio de la cadena
+
     if (i == 0 || buf[i - 1] == ' ' || buf[i - 1] == '\n') {
       tokens[j] = malloc(tamToken * sizeof(char));
       if (tokens[j] == NULL) {
@@ -66,14 +66,13 @@ char **lector() {
         i++;
         k++;
       }
-      tokens[j][k] = '\0'; // Aseguramos que cada token termine con '\0'
+      tokens[j][k] = '\0';
 
-      // Si el token está vacío, no lo agregamos
       if (tokens[j][0] == '\0') {
         free(tokens[j]);
-        j--; // No aumentamos j si el token está vacío
+        j--;
       } else {
-        j++; // Solo aumentamos j si el token es válido
+        j++;
       }
     } else {
       i++;
@@ -105,4 +104,3 @@ char **lector() {
 
   return tokens;
 }
-

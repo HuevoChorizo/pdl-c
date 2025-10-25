@@ -25,7 +25,7 @@ int main() {
     }
 
     /*Prueba para comprobar si el writer funciona*/
-    token **a = malloc(2 * sizeof(token *));
+    token **a = malloc(3 * sizeof(token *));
     if (a == NULL) {
       printf("Error al reservar memoria para los tokens\n");
       return 1;
@@ -37,7 +37,6 @@ int main() {
       free(a);
       return 1;
     }
-
     a[0]->id_pal = "BOOL";
     a[0]->atribute = "-";
 
@@ -48,19 +47,32 @@ int main() {
       free(a);
       return 1;
     }
-    a[1]->id_pal = "EOF";
-    a[1]->atribute = NULL;
+    a[1]->id_pal = "INT";
+    a[1]->atribute = "+";
+
+    a[2] = malloc(sizeof(token));
+    if (a[2] == NULL) {
+      printf("Error al reservar memoria para el tercer token\n");
+      free(a[0]);
+      free(a[1]);
+      free(a);
+      return 1;
+    }
+    a[2]->id_pal = "EOF";
+    a[2]->atribute = "-";
 
     if (writer(a) != 0) {
       printf("Hay un error en la escritura\n");
       free(a[0]);
       free(a[1]);
+      free(a[2]);
       free(a);
       return 1;
     }
 
     free(a[0]);
     free(a[1]);
+    free(a[2]);
     free(a);
 
     for (int i = 0; desglosado[i] != NULL; i++) {

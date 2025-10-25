@@ -13,7 +13,10 @@ int writer(token **tokens) {
   }
 
   int i = 0;
-  while (strcmp(tokens[i]->id_pal, "EOF") != 0) {
+  int final = 0;
+  while (final == 0) {
+    if (strcmp(tokens[i]->id_pal, "EOF") == 0)
+      final = 1;
     char *buf = malloc(34 * sizeof(char));
     if (!buf) {
       printf("Error al reservar memoria\n");
@@ -58,11 +61,5 @@ int writer(token **tokens) {
     free(buf);
     i++;
   }
-
-  if (close(fd) == -1) {
-    printf("Error al cerrar el archivo\n");
-    return 1;
-  }
-
   return 0;
 }
