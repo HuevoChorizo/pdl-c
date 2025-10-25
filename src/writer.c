@@ -6,25 +6,31 @@
 #include <unistd.h>
 
 int writer(token **tokens) {
-  int fd = creat("Salida.txt", 0777);
+  int fd = creat("Salida.txt", 0644);
   if (fd == -1) {
-    printf("Tonoto no sabe ejcribir archivos");
+    printf("Error al crear el archivo\n");
     return 1;
   }
+
   int i = 0;
-  while (strcmp(tokens[i]->id_pal, "EOF\0") != 0) {
-    char *buf = malloc(32 * sizeof(char));
+  while (strcmp(tokens[i]->id_pal, "EOF") != 0) {
+    char *buf = malloc(34 * sizeof(char));
+    if (!buf) {
+      printf("Error al reservar memoria\n");
+      close(fd);
+      return 1;
+    }
+
     char *aux1 = tokens[i]->id_pal;
     char *aux2 = tokens[i]->atribute;
 
     buf[0] = '<';
 
-    int j = 0;
-    while (aux1[j] != '\0') {
-      buf[j + 1] = aux1[j];
+    int j = 1;
+    while (aux1[j - 1] != '\0') {
+      buf[j] = aux1[j - 1];
       j++;
     }
-    j++;
     buf[j] = ',';
     j++;
     buf[j] = ' ';
@@ -35,15 +41,28 @@ int writer(token **tokens) {
       buf[j + k] = aux2[k];
       k++;
     }
-    buf[j + k] = '>';
-    k++;
-    buf[j + k] = '\n';
-    write(fd, buf, j + k);
+    j += k;
+
+    buf[j] = '>';
+    j++;
+    buf[j] = '\n';
+    j++;
+
+    if (write(fd, buf, j) == -1) {
+      printf("Error al escribir en el archivo\n");
+      free(buf);
+      close(fd);
+      return 1;
+    }
+
+    free(buf);
+    i++;
   }
 
-  if (close(fd) != 0) {
-    printf("Error al cerrar");
+  if (close(fd) == -1) {
+    printf("Error al cerrar el archivo\n");
     return 1;
   }
+
   return 0;
 }
