@@ -4,6 +4,7 @@
 
 /* procesa el fichero desglosado en segmentos a evaluar posteriormente */
 char **procesador(char **desglosado) {
+  /*TODO: Hay que gestionar bien la memoria*/
   char **procesado = malloc(200 * sizeof(char *));
   if (procesado == NULL) {
     printf("Error al reservar memoria para procesado\n");
