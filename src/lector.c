@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+/*TODO: Cambiar el nombre de token, no cuadra aquí y puede ser lioso.*/
 char **lector() {
   int fd = open("TokensEntrada", O_RDONLY);
   if (fd == -1) {
@@ -14,8 +15,9 @@ char **lector() {
    * que desarrolle las propiedades de los tokens (eventualmente xd ) */
   int size = lseek(fd, 0, SEEK_END);
   lseek(fd, 0, SEEK_SET);
-  char buf[size];
+  char buf[size + 1]; // Asegúrate de reservar espacio para el '\0'
   read(fd, buf, size);
+  buf[size] = '\0'; // Terminamos el buffer con '\0'
 
   /* Básicamente recorre todo el bufer y copia los tokens a un nuevo bufer de
    * tokens, de esta forma  simplifica el trabajo del analizador, ya ha
@@ -39,6 +41,7 @@ char **lector() {
   while (buf[i] != '\0') {
     int cont = 0;
     int k = 0;
+    // Si encontramos un espacio, salto de línea o es el inicio de la cadena
     if (i == 0 || buf[i - 1] == ' ' || buf[i - 1] == '\n') {
       tokens[j] = malloc(tamToken * sizeof(char));
       if (tokens[j] == NULL) {
@@ -47,17 +50,6 @@ char **lector() {
       }
       k = 0;
 
-      /* Básicamente emplea el espacio ' ', el caracter de nueva línea '\n' y el
-       * caracter nulo como delimitadores, para hacerle el trabajo más sencillo
-       * al analizador léxico. Sin embargo, para evitar errores o pérdidas de
-       * información necesaria, dentro de los comentarios permitidos
-       * (comentarios de bloque), o dentro de un entrecomillado "", no emplea
-       * esos caracteres como delimitadores.
-       *
-       * El bucle parece complejo, pero en realidad comprueba que no haya un
-       * comentario abierto o un String "", y de haberlo, no cuenta esos
-       * caractéres como delimitadores, en el resto de los casos les da chamba.
-       */
       while ((buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\0') ||
              (cont != 0)) {
         if (i + 1 < size) {
@@ -74,22 +66,30 @@ char **lector() {
         i++;
         k++;
       }
-      tokens[j][k] = '\0';
-      j++;
+      tokens[j][k] = '\0'; // Aseguramos que cada token termine con '\0'
+
+      // Si el token está vacío, no lo agregamos
+      if (tokens[j][0] == '\0') {
+        free(tokens[j]);
+        j--; // No aumentamos j si el token está vacío
+      } else {
+        j++; // Solo aumentamos j si el token es válido
+      }
     } else {
       i++;
     }
+
     if (buf[i] == '\n') {
       i++;
     }
   }
 
-  /*No voy a hacer un caso específico para el último token, que aumente j otra
+  /* No voy a hacer un caso específico para el último token, que aumente j otra
    * vez, sin embargo, como el último de verdad es j-2, j-1 tiene que ser
    * null.*/
-  tokens[j - 1] = NULL;
+  tokens[j] = NULL; // Terminamos la lista de tokens con NULL
 
-  /*Esto es básicamente una comprobación de que funciona imprimiendolo, es por
+  /* Esto es básicamente una comprobación de que funciona imprimiéndolo, es por
    * ello temporal y eventualmente lo borraré.*/
   i = 0;
   while (tokens[i] != NULL) {
@@ -97,7 +97,7 @@ char **lector() {
     i++;
   }
 
-  /*Cierra el fichero de entrada*/
+  /* Cierra el fichero de entrada */
   if (close(fd) != 0) {
     printf("El fichero se ha cerrado con un error.\n");
     exit(1);
@@ -105,3 +105,4 @@ char **lector() {
 
   return tokens;
 }
+

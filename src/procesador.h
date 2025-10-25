@@ -1,6 +1,6 @@
 #ifndef ANALIZADOR_H
 #define ANALIZADOR_H
 
-int analizador(char **desglosado);
+char **procesador(char **desglosado);
 
 #endif
