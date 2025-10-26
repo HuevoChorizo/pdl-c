@@ -48,6 +48,11 @@ char **lector() {
 
       while ((buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\0') ||
              (cont != 0)) {
+        if (buf[i + 1] == '\0' && cont != 0) {
+          printf("Hay un comentario o un string al que le falta cerrarse o "
+                 "abrirse");
+          exit(1);
+        }
         if (i + 1 < size) {
           if (buf[i] == '"' || (buf[i] == '/' && buf[i + 1] == '*') ||
               ((cont % 2 != 0) && (buf[i] == '*' && buf[i + 1] == '/'))) {
@@ -85,13 +90,12 @@ char **lector() {
   tokens[j] = NULL; // Terminamos la lista de tokens con NULL
 
   /* Esto es básicamente una comprobación de que funciona imprimiéndolo, es por
-   * ello temporal y eventualmente lo borraré.
+   * ello temporal y eventualmente lo borraré.*/
   i = 0;
   while (tokens[i] != NULL) {
     printf("Token %d: %s\n", i + 1, tokens[i]);
     i++;
   }
-  */
 
   /* Cierra el fichero de entrada */
   if (close(fd) != 0) {
