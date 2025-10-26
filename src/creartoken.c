@@ -123,18 +123,18 @@ token **crear(char **entrada) {
     }
 
     if (strcmp(entrada[i], "boolean") == 0) {
-      if (entrada[i + 2][1] != '=') {
-        char *aux = tabla(entrada[i + 1], NULL);
-      }
-      char *aux = tabla(entrada[i + 1], entrada[i + 3]);
-      /*Luego la tabla devuelve un char, con el identificador lo que sea.*/
-      res[j]->id_pal = "ID";
-      res[j]->atribute = aux;
-      j++;
-      /*TODO:Hay que convertir de int a String, o en su defecto hacer que la
-       * tabla devuelva un String; también hay que aplicar esta lógica a toda
-       * variable, para poder almacenarla en la tabla de símbolos, y al mismo
-       * tiempo guardar su ID como un token.*/
+      /* if (entrada[i + 2][1] != '=') {
+         char *aux = tabla(entrada[i + 1], NULL);
+       }
+       char *aux = tabla(entrada[i + 1], entrada[i + 3]);
+       Luego la tabla devuelve un char, con el identificador lo que sea.
+       res[j]->id_pal = "ID";
+       res[j]->atribute = aux;
+       j++;
+       TODO:Hay que convertir de int a String, o en su defecto hacer que la
+        * tabla devuelva un String; también hay que aplicar esta lógica a toda
+        * variable, para poder almacenarla en la tabla de símbolos, y al mismo
+        * tiempo guardar su ID como un token.*/
       res[j]->id_pal = "BOOL";
       res[j]->atribute = "-";
     }
@@ -200,5 +200,4 @@ token **crear(char **entrada) {
   res[last_pos + 1]->id_pal = "EOF";
   res = realloc(res, sizeof(token) * (last_pos + 1));
   return res;
-}
 }

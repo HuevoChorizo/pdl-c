@@ -90,7 +90,13 @@ char **procesador(char **desglosado) {
 
     i++;
   }
+  i = 0;
+  while (procesado[i] != NULL) {
+    printf("Token %d: %s\n", i + 1, procesado[i]);
+    i++;
+  }
 
   procesado[j] = NULL;
+  procesado = realloc(procesado, (j + 1) * sizeof(char *));
   return procesado;
 }

@@ -15,10 +15,9 @@ char **lector() {
    * que desarrolle las propiedades de los tokens (eventualmente xd ) */
   int size = lseek(fd, 0, SEEK_END);
   lseek(fd, 0, SEEK_SET);
-  char buf[size + 1]; // Asegúrate de reservar espacio para el '\0'
+  char buf[size + 1];
   read(fd, buf, size);
-  buf[size] = '\0'; // Terminamos el buffer con '\0'
-
+  buf[size] = '\0';
   /* Básicamente recorre todo el bufer y copia los tokens a un nuevo bufer de
    * tokens, de esta forma  simplifica el trabajo del analizador, ya ha
    * preparado el texto, solo queda comprobar si el token es un token de verdad
@@ -28,10 +27,7 @@ char **lector() {
    * sizeof(char*) */
   int tamToken = 100;
 
-  /* Habría que ver el tamaño máximo de token, dividir size entre este, y así
-   * vas que chutas */
-  /* TODO: cambiar el 4 por el tamaño máximo del token (eventualmente) */
-  char **tokens = malloc(size / 4 * sizeof(char *));
+  char **tokens = malloc(size * sizeof(char *));
   if (tokens == NULL) {
     printf("Error al reservar memoria para tokens\n");
     exit(1);
@@ -89,18 +85,20 @@ char **lector() {
   tokens[j] = NULL; // Terminamos la lista de tokens con NULL
 
   /* Esto es básicamente una comprobación de que funciona imprimiéndolo, es por
-   * ello temporal y eventualmente lo borraré.*/
+   * ello temporal y eventualmente lo borraré.
   i = 0;
   while (tokens[i] != NULL) {
     printf("Token %d: %s\n", i + 1, tokens[i]);
     i++;
   }
+  */
 
   /* Cierra el fichero de entrada */
   if (close(fd) != 0) {
     printf("El fichero se ha cerrado con un error.\n");
     exit(1);
   }
+  tokens = realloc(tokens, (j + 1) * sizeof(char *));
 
   return tokens;
 }
