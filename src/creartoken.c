@@ -12,8 +12,6 @@ token **crear(char **entrada) {
     if (entrada[i][0] != '\0') {
       switch (entrada[i][0]) {
       case '=':
-        res[j]->id_pal = "EQ";
-        res[j]->atribute = "-";
         break;
       case ',':
         res[j]->id_pal = "COMA";
