@@ -17,7 +17,7 @@ int writer(token **tokens) {
   while (final == 0) {
     if (strcmp(tokens[i]->id_pal, "EOF") == 0)
       final = 1;
-    char *buf = malloc(34 * sizeof(char));
+    char *buf = malloc(20000 * sizeof(char));
     if (!buf) {
       printf("Error al reservar memoria\n");
       close(fd);
@@ -25,7 +25,7 @@ int writer(token **tokens) {
     }
 
     char *aux1 = tokens[i]->id_pal;
-    char *aux2 = tokens[i]->atribute;
+    char *aux2 = tokens[i]->atribute.cadena;
 
     buf[0] = '<';
 

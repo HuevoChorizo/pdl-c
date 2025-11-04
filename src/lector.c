@@ -91,11 +91,6 @@ char **lector() {
 
   /* Esto es básicamente una comprobación de que funciona imprimiéndolo, es por
    * ello temporal y eventualmente lo borraré.*/
-  i = 0;
-  while (tokens[i] != NULL) {
-    printf("Token %d: %s\n", i + 1, tokens[i]);
-    i++;
-  }
 
   /* Cierra el fichero de entrada */
   if (close(fd) != 0) {
@@ -103,6 +98,5 @@ char **lector() {
     exit(1);
   }
   tokens = realloc(tokens, (j + 1) * sizeof(char *));
-
   return tokens;
 }

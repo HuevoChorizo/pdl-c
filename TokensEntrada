@@ -1,20 +1,5 @@
-ALex ()
-{
-estado:= 0; /* estado inicial */
-LOOP until estado final
-{
-acción:= MT_AFD.acción (estado, car);
-estado:= MT_AFD.estado (estado, car);
-IF estado = null
-then error(acción)
-else switch acción /* ejecuta las acciones */
-{
-case Ai: Acción semántica
-"Adrian masón \n"
-…
+int main (a) {
+float a = 23;
+("Dasel judio de mierda.")
+/* Alexis Pedofilo */
 }
-} /* fin del LOOP */
-}
-
-" AAAAAAAAA**AA///A"
-/* ** // */

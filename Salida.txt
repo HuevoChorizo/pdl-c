@@ -1,3 +1,18 @@
-<BOOL, ->
-<INT, +>
+<INT, ->
+<Var, main>
+<PAROPEN, ->
+<ERR, a>
+<PARCLOSE, ->
+<BROPEN, ->
+<FLOAT, ->
+<Var, a>
+<EQ, ->
+<CONSTINT, 23>
+<PUNTOCOMA, ->
+<PAROPEN, ->
+<str, "Dasel judio de mierda.">
+<PARCLOSE, ->
+<CBLOPEN, ->
+<CBLCLOSE, ->
+<BRCLOSE, ->
 <EOF, ->

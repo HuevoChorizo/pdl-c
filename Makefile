@@ -1,6 +1,6 @@
 name=out
 #libs=
-CFLAGS=-Wall -Wextra #$(libs)
+CFLAGS=-Wall -Wextra -fsanitize=address#$(libs)
 SRCS=$(wildcard src/*.c)
 OBJS=$(SRCS:src/%.c=bin/%.o)
 

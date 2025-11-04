@@ -1,6 +1,5 @@
 #include "estados.h"
 #include "lector.h"
-#include "procesador.h"
 #include "tokens.h"
 #include "writer.h"
 #include <stdio.h>
@@ -11,12 +10,11 @@
 int main() {
   /*Simplifica el autómata, y la comprensión de lo que realiza.*/
   char **desglosado = lector();
-  if (desglosado == NULL)
-    return ERR;
-  char **procesado = procesador(desglosado);
-  if (procesado == NULL)
-    return ERR;
-  int a = estados(procesado);
+  token **a = estados(desglosado);
+  if (a != NULL) {
+    printf("El autómata funciona");
+  }
+  writer(a);
   /*Aquí se liberan los punteros.*/
 
   /*TODO: Analizar a futuro si hay problemas con que el último elemento del
@@ -25,10 +23,5 @@ int main() {
     free(desglosado[i]);
   }
   free(desglosado);
-  for (int i = 0; procesado[i] != NULL; i++) {
-    free(procesado[i]);
-  }
-  free(procesado);
-
   return 0;
 }
