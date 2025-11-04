@@ -23,6 +23,7 @@ int estadoerr(char *palabra) {
   memcpy(cadena, palabra, strlen(palabra) + 1);
   resultado[conT++]->atribute.cadena = cadena;
   return OK;
+  free(palabra);
 }
 
 int estado4(char *palabra) {
@@ -175,6 +176,7 @@ int estado9(char *palabra) {
   memcpy(cadena, palabra, strlen(palabra) + 1);
   resultado[conT]->id_pal = "Var";
   resultado[conT++]->atribute.cadena = cadena;
+  free(palabra);
   return OK;
 }
 
@@ -293,7 +295,7 @@ int start(char *palabra, int f) {
   int flag = f;
   if (flag == CMNTC)
     flag = OK;
-  char *paso = malloc(64 * sizeof(char));
+  char *paso = malloc((strlen(palabra) + 1) * sizeof(char));
   int j = 0;
   int i = 0;
   while (palabra[i] != '\0') {
@@ -352,7 +354,7 @@ int start(char *palabra, int f) {
 }
 
 token **estados(char **palabra) {
-  resultado = malloc(2000 * sizeof(token *));
+  resultado = malloc(2000);
   int i = 0;
   int f = OK;
   while (palabra[i] != NULL) {
@@ -361,8 +363,8 @@ token **estados(char **palabra) {
   }
   resultado[conT] = malloc(sizeof(token));
   resultado[conT]->id_pal = "EOF";
-  resultado[conT]->atribute.cadena = "-";
-  conT++;
-  resultado = realloc(resultado, conT * sizeof(token *));
+  resultado[conT++]->atribute.cadena = "-";
+  resultado[conT++] = NULL;
+  resultado = realloc(resultado, (conT * sizeof(token *)));
   return resultado;
 }

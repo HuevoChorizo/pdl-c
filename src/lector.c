@@ -68,7 +68,7 @@ char **lector() {
         k++;
       }
       tokens[j][k] = '\0';
-
+      tokens[j] = realloc(tokens[j], ((k + 1) * sizeof(char)));
       if (tokens[j][0] == '\0') {
         free(tokens[j]);
         j--;

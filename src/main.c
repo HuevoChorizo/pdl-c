@@ -23,5 +23,8 @@ int main() {
     free(desglosado[i]);
   }
   free(desglosado);
-  return 0;
+  for (int i = 0; a[i + 1] != NULL; i++) {
+    free(a[i]);
+  }
+  free(a);
 }
