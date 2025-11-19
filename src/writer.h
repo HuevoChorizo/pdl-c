@@ -2,6 +2,6 @@
 #ifndef WRITER_H
 #define WRITER_H
 
-int writer(token **);
+int writer(tokens *);
 
 #endif

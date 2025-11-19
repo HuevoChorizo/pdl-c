@@ -5,7 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 
-int writer(token **tokens) {
+int writer(tokens *tokens) {
   int fd = creat("Salida.txt", 0644);
   if (fd == -1) {
     printf("Error al crear el archivo\n");
@@ -15,7 +15,7 @@ int writer(token **tokens) {
   int i = 0;
   int final = 0;
   while (final == 0) {
-    if (strcmp(tokens[i]->id_pal, "EOF") == 0)
+    if (strcmp(tokens->tokenArr[i].id_pal, "EOF") == 0)
       final = 1;
     char *buf = malloc(256 * sizeof(char));
     if (!buf) {
@@ -24,13 +24,12 @@ int writer(token **tokens) {
       return 1;
     }
 
-    char *aux1 = malloc(strlen(tokens[i]->id_pal) + 1);
-    char *aux2 = malloc(strlen(tokens[i]->atribute.cadena) + 1);
-    memcpy(aux1, tokens[i]->id_pal, strlen(tokens[i]->id_pal) + 1);
-    memcpy(aux2, tokens[i]->atribute.cadena,
-           strlen(tokens[i]->atribute.cadena) + 1);
-    free(tokens[i]->id_pal);
-    free(tokens[i]->atribute.cadena);
+    char *aux1 = malloc(strlen(tokens->tokenArr[i].id_pal) + 1);
+    char *aux2 = malloc(strlen(tokens->tokenArr[i].atribute.cadena) + 1);
+    memcpy(aux1, tokens->tokenArr[i].id_pal,
+           strlen(tokens->tokenArr[i].id_pal) + 1);
+    memcpy(aux2, tokens->tokenArr[i].atribute.cadena,
+           strlen(tokens->tokenArr[i].atribute.cadena) + 1);
 
     buf[0] = '<';
 

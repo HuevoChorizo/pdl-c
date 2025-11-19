@@ -2,6 +2,6 @@
 #ifndef ESTADOS_H
 #define ESTADOS_H
 
-token **estados(char **entrada);
+tokens *estados(char **entrada);
 
 #endif

@@ -10,7 +10,7 @@
 int main() {
   /*Simplifica el autómata, y la comprensión de lo que realiza.*/
   char **desglosado = lector();
-  token **a = estados(desglosado);
+  tokens *a = estados(desglosado);
 
   if (a != NULL) {
     printf("El autómata funciona");
@@ -20,10 +20,6 @@ int main() {
 
   /*TODO: Analizar a futuro si hay problemas con que el último elemento del
    * puntero sea NULL, si hay que quitarlo o que hacer. */
-  for (int i = 0; a[i] != NULL; i++) {
-    free(a[i]);
-  }
 
-  free(a);
   return b;
 }
