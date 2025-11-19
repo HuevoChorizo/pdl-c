@@ -1,102 +1,96 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
-/*TODO: Cambiar el nombre de token, no cuadra aquí y puede ser lioso.*/
 char **lector() {
+
   int fd = open("TokensEntrada", O_RDONLY);
   if (fd == -1) {
     printf("Error al abrir el fichero\n");
+
     exit(1);
   }
 
-  /* Aquí deberíamos implementar el lector directamente, hay que hacer un struct
-   * que desarrolle las propiedades de los tokens (eventualmente xd ) */
   int size = lseek(fd, 0, SEEK_END);
   lseek(fd, 0, SEEK_SET);
-  char buf[size + 1];
+  char *buf = malloc(size + 1);
   read(fd, buf, size);
   buf[size] = '\0';
-  /* Básicamente recorre todo el bufer y copia los tokens a un nuevo bufer de
-   * tokens, de esta forma  simplifica el trabajo del analizador, ya ha
-   * preparado el texto, solo queda comprobar si el token es un token de verdad
-   * o no.*/
 
-  /* TODO: encontrar el tamaño del token, y de paso multiplicar por
-   * sizeof(char*) */
-  int tamToken = 100;
-
-  char **tokens = malloc(size * sizeof(char *));
-  if (tokens == NULL) {
+  char **salida = malloc(strlen(buf) * sizeof(char *));
+  if (salida == NULL) {
     printf("Error al reservar memoria para tokens\n");
     exit(1);
   }
 
-  int i = 0, j = 0;
+  int i = 0;
+  int j = 0;
+  int k = 0;
+  char *aux = malloc(256 * sizeof(char));
+  int s = 0;
+  int cb = 0;
+
   while (buf[i] != '\0') {
-    int cont = 0;
-    int k = 0;
-
-    if (i == 0 || buf[i - 1] == ' ' || buf[i - 1] == '\n') {
-      tokens[j] = malloc(tamToken * sizeof(char));
-      if (tokens[j] == NULL) {
-        printf("Error al reservar la memoria de un token\n");
-        exit(1);
-      }
-      k = 0;
-
-      while ((buf[i] != ' ' && buf[i] != '\n' && buf[i] != '\0') ||
-             (cont != 0)) {
-        if (buf[i + 1] == '\0' && cont != 0) {
-          printf("Hay un comentario o un string al que le falta cerrarse o "
-                 "abrirse");
-          exit(1);
-        }
-        if (i + 1 < size) {
-          if (buf[i] == '"' || (buf[i] == '/' && buf[i + 1] == '*') ||
-              ((cont % 2 != 0) && (buf[i] == '*' && buf[i + 1] == '/'))) {
-            if (cont == 1)
-              cont--;
-            else
-              cont++;
-          }
-        }
-
-        tokens[j][k] = buf[i];
-        i++;
-        k++;
-      }
-      tokens[j][k] = '\0';
-      tokens[j] = realloc(tokens[j], ((k + 1) * sizeof(char)));
-      if (tokens[j][0] == '\0') {
-        free(tokens[j]);
-        j--;
+    if (s || buf[i] == '"') {
+      if (buf[i] == '"' && s == 1) {
+        s = 0;
       } else {
-        j++;
+        s = 1;
       }
-    } else {
-      i++;
-    }
+      aux[k++] = buf[i++];
+    } else if (cb || (buf[i] == '/' && buf[i + 1] == '*')) {
+      if (buf[i] == '*' && buf[i + 1] == '/') {
+        cb = 0;
+      } else {
+        cb = 1;
+      }
+      aux[k++] = buf[i++];
+      if (!cb) {
+        aux[k++] = buf[i++];
+      }
 
-    if (buf[i] == '\n') {
+    } else if (buf[i] == '\t') {
       i++;
+    } else if (buf[i] == ' ') {
+      if (i != 0 && buf[i - 1] == ' ') {
+        i++;
+      } else {
+        aux[k] = '\0';
+        salida[j] = malloc(strlen(aux) + 1 * sizeof(char));
+        memcpy(salida[j++], aux, strlen(aux) + 1);
+        k = 0;
+        i++;
+      }
+    } else if (buf[i] == '\n') {
+      aux[k] = '\0';
+      salida[j] = malloc(strlen(aux) + 1 * sizeof(char));
+      memcpy(salida[j++], aux, strlen(aux) + 1);
+      k = 0;
+      salida[j] = malloc(2 * sizeof(char));
+      salida[j][0] = '\n';
+      salida[j++][1] = '\0';
+      i++;
+    } else {
+      aux[k++] = buf[i++];
     }
   }
 
-  /* No voy a hacer un caso específico para el último token, que aumente j otra
-   * vez, sin embargo, como el último de verdad es j-2, j-1 tiene que ser
-   * null.*/
-  tokens[j] = NULL; // Terminamos la lista de tokens con NULL
-
-  /* Esto es básicamente una comprobación de que funciona imprimiéndolo, es por
-   * ello temporal y eventualmente lo borraré.*/
-
-  /* Cierra el fichero de entrada */
+  free(aux);
+  free(buf);
   if (close(fd) != 0) {
-    printf("El fichero se ha cerrado con un error.\n");
+    printf("El fichero se ha cerrado con un error \n");
     exit(1);
   }
-  tokens = realloc(tokens, (j + 1) * sizeof(char *));
-  return tokens;
+
+  salida[j] = NULL;
+
+  salida = realloc(salida, (j + 1) * sizeof(char *));
+  if (salida == NULL) {
+    printf("Error al redimensionar memoria para tokens\n");
+    exit(1);
+  }
+
+  return salida;
 }

@@ -17,7 +17,7 @@ int writer(token **tokens) {
   while (final == 0) {
     if (strcmp(tokens[i]->id_pal, "EOF") == 0)
       final = 1;
-    char *buf = malloc(20000 * sizeof(char));
+    char *buf = malloc(256 * sizeof(char));
     if (!buf) {
       printf("Error al reservar memoria\n");
       close(fd);

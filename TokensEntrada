@@ -1,5 +1,18 @@
-int main (a) {
-float a = 23;
-("Dasel judio de mierda.")
-/* Alexis Pedofilo */
+/* Programa de prueba completo
+fdsja f
+fdsafda
+*/
+"ahora me cago en dios \n"
+let int contador;
+let float pi;
+let string mensaje;
+let boolean activo;
+
+function int suma(int a, int b) {
+    let int resultado;
+    resultado = a + b;
+    return resultado;
 }
+
+
+
