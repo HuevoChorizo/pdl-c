@@ -20,6 +20,7 @@
 <FUNCTION, ->
 <INT, ->
 <Var, suma>
+<ERR, (,>
 <PAROPEN, ->
 <INT, ->
 <Var, a>

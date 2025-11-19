@@ -8,7 +8,7 @@ let float pi;
 let string mensaje;
 let boolean activo;
 
-function int suma(int a, int b) {
+function int suma(,(int a, int b) {
     let int resultado;
     resultado = a + b;
     return resultado;

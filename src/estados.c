@@ -323,12 +323,20 @@ int start(char *palabra, int f) {
     } else if (palabra[i + 1] != '\0') {
       if (!isalnum(palabra[i + 1]) && palabra[i + 1] != '"' &&
           !(palabra[i + 1] == '/' && palabra[i + 2] == '*')) {
-        char mandar[3];
-        mandar[0] = palabra[i++];
-        mandar[1] = palabra[i++];
-        mandar[2] = '\0';
-        flag = estado3(mandar);
-      } else {
+        if (palabra[i + 1] != '(' && palabra[i + 1] != ')') {
+          char mandar[3];
+          mandar[0] = palabra[i++];
+          mandar[1] = palabra[i++];
+          mandar[2] = '\0';
+          flag = estado3(mandar);
+        } else {
+          char mandar[2];
+          mandar[0] = palabra[i++];
+          mandar[1] = '\0';
+          flag = estado3(mandar);
+        }
+
+      } else if (flag != CMNTC) {
         char mandar[2];
         mandar[0] = palabra[i++];
         mandar[1] = '\0';

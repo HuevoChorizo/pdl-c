@@ -18,6 +18,10 @@ char **lector() {
   char *buf = malloc(size + 1);
   read(fd, buf, size);
   buf[size] = '\0';
+  if (close(fd) != 0) {
+    printf("El fichero se ha cerrado con un error \n");
+    exit(1);
+  }
 
   char **salida = malloc(strlen(buf) * sizeof(char *));
   if (salida == NULL) {
@@ -87,10 +91,6 @@ char **lector() {
 
   free(aux);
   free(buf);
-  if (close(fd) != 0) {
-    printf("El fichero se ha cerrado con un error \n");
-    exit(1);
-  }
 
   salida[j] = NULL;
 
