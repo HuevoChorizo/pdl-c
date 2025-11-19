@@ -28,13 +28,13 @@ char **lector() {
   int i = 0;
   int j = 0;
   int k = 0;
-  char *aux = malloc(256 * sizeof(char));
   int s = 0;
   int cb = 0;
+  char *aux = malloc(size * sizeof(char));
 
   while (buf[i] != '\0') {
     if (s || buf[i] == '"') {
-      if (buf[i] == '"' && s == 1) {
+      if (buf[i] == '"' && i != 0 && buf[i - 1] != '\\' && s == 1) {
         s = 0;
       } else {
         s = 1;
@@ -52,7 +52,15 @@ char **lector() {
       }
 
     } else if (buf[i] == '\t') {
-      i++;
+      if (i != 0 && buf[i - 1] == '\t') {
+        i++;
+      } else {
+        aux[k] = '\0';
+        salida[j] = malloc(strlen(aux) + 1 * sizeof(char));
+        memcpy(salida[j++], aux, strlen(aux) + 1);
+        k = 0;
+        i++;
+      }
     } else if (buf[i] == ' ') {
       if (i != 0 && buf[i - 1] == ' ') {
         i++;

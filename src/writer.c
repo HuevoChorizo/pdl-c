@@ -24,8 +24,13 @@ int writer(token **tokens) {
       return 1;
     }
 
-    char *aux1 = tokens[i]->id_pal;
-    char *aux2 = tokens[i]->atribute.cadena;
+    char *aux1 = malloc(strlen(tokens[i]->id_pal) + 1);
+    char *aux2 = malloc(strlen(tokens[i]->atribute.cadena) + 1);
+    memcpy(aux1, tokens[i]->id_pal, strlen(tokens[i]->id_pal) + 1);
+    memcpy(aux2, tokens[i]->atribute.cadena,
+           strlen(tokens[i]->atribute.cadena) + 1);
+    free(tokens[i]->id_pal);
+    free(tokens[i]->atribute.cadena);
 
     buf[0] = '<';
 
@@ -59,6 +64,8 @@ int writer(token **tokens) {
     }
 
     free(buf);
+    free(aux1);
+    free(aux2);
     i++;
   }
   if (close(fd) == -1) {

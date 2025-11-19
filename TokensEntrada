@@ -2,7 +2,7 @@
 fdsja f
 fdsafda
 */
-"ahora me cago en dios \n"
+"ahora me cago en dios \" \n"
 let int contador;
 let float pi;
 let string mensaje;

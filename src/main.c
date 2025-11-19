@@ -10,25 +10,20 @@
 int main() {
   /*Simplifica el autómata, y la comprensión de lo que realiza.*/
   char **desglosado = lector();
-  /* token **a = estados(desglosado);
+  token **a = estados(desglosado);
+
   if (a != NULL) {
     printf("El autómata funciona");
   }
-  writer(a);
-  */
-  /*Aquí se liberan los punteros.*/
-  for (int i = 0; desglosado[i] != NULL; i++) {
-    printf("El este nº%d es :%s\n", i, desglosado[i]);
-  }
+  free(desglosado);
+  int b = writer(a);
+
   /*TODO: Analizar a futuro si hay problemas con que el último elemento del
    * puntero sea NULL, si hay que quitarlo o que hacer. */
-  for (int i = 0; desglosado[i] != NULL; i++) {
-    free(desglosado[i]);
-  }
-  free(desglosado);
-  /*
-   * for (int i = 0; a[i + 1] != NULL; i++) {
+  for (int i = 0; a[i] != NULL; i++) {
     free(a[i]);
   }
-  free(a); */
+
+  free(a);
+  return b;
 }

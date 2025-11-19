@@ -14,6 +14,8 @@
 #define ESPAL 5
 
 int conT = 0;
+int conTLin = 0;
+
 token **resultado;
 
 int estadoerr(char *palabra) {
@@ -23,7 +25,6 @@ int estadoerr(char *palabra) {
   memcpy(cadena, palabra, strlen(palabra) + 1);
   resultado[conT++]->atribute.cadena = cadena;
   return OK;
-  free(palabra);
 }
 
 int estado4(char *palabra) {
@@ -136,9 +137,11 @@ int estado5(char *palabra) {
 
 int estado6(char *palabra) {
   if ((strlen(palabra) - 2) <= 64) {
+    char *cadena = malloc(strlen(palabra) + 1);
+    memcpy(cadena, palabra, strlen(palabra) + 1);
     resultado[conT] = malloc(sizeof(token));
     resultado[conT]->id_pal = "str";
-    resultado[conT++]->atribute.cadena = palabra;
+    resultado[conT++]->atribute.cadena = cadena;
     return OK;
   }
   return estadoerr(palabra);
@@ -176,7 +179,6 @@ int estado9(char *palabra) {
   memcpy(cadena, palabra, strlen(palabra) + 1);
   resultado[conT]->id_pal = "Var";
   resultado[conT++]->atribute.cadena = cadena;
-  free(palabra);
   return OK;
 }
 
@@ -275,6 +277,10 @@ int estado2(char *palabra, int f) {
 
 int estado3(char *palabra) {
   if (palabra[1] == '\0') {
+    if (palabra[0] == '\n') {
+      conTLin++;
+      return OK;
+    }
     return estado4(palabra);
   } else if (palabra[2] == '\0') {
     return estado5(palabra);
@@ -308,13 +314,15 @@ int start(char *palabra, int f) {
     } else if (palabra[i] == '/' && palabra[i + 1] == '*') {
       flag = estado3("/*");
       while (!(palabra[i] == '*' && palabra[i + 1] == '/')) {
+        if (palabra[i] == '\n')
+          conTLin++;
         i++;
       }
       flag = estado3("*/");
       i = i + 2;
     } else if (palabra[i] == '"') {
       paso[j++] = palabra[i++];
-      while (palabra[i] != '"') {
+      while (palabra[i] != '"' || (i != 0 && palabra[i - 1] == '\\')) {
         paso[j++] = palabra[i++];
       }
       paso[j++] = palabra[i];
@@ -350,6 +358,8 @@ int start(char *palabra, int f) {
 
   /*TODO: Este puntero hay que liberarlo y evitar enviarlo a otras zonas,
    * haciendo strcopy en vez de mandarlo directamente.*/
+  free(paso);
+  free(palabra);
   return flag;
 }
 
