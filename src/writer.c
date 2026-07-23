@@ -1,10 +1,12 @@
-#include "tokens.h"
+#include "include/tokens.h"
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
+/*TODO: Eventualmente tendré que arreglar esta mierda pa que pille de terminal
+ * el archivo de salida*/
 int writer(tokens *tokens) {
   int fd = creat("Salida.txt", 0644);
   if (fd == -1) {
@@ -17,13 +19,19 @@ int writer(tokens *tokens) {
   while (final == 0) {
     if (strcmp(tokens->tokenArr[i].id_pal, "EOF") == 0)
       final = 1;
+
+    /* Esto sirve para omitir los tokens "salto", necesarios para el gestor de
+     * errores del analizador sintáctico*/
+    if (strcmp(tokens->tokenArr[i].id_pal, "salto") == 0) {
+      i++;
+      continue;
+    }
     char *buf = malloc(256 * sizeof(char));
     if (!buf) {
       printf("Error al reservar memoria\n");
       close(fd);
       return 1;
     }
-
     char *aux1 = malloc(strlen(tokens->tokenArr[i].id_pal) + 1);
     char *aux2 = malloc(strlen(tokens->tokenArr[i].atribute.cadena) + 1);
     memcpy(aux1, tokens->tokenArr[i].id_pal,

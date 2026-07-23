@@ -7,6 +7,7 @@ typedef union atributo {
 } atrib;
 
 typedef struct token_s {
+  int estado;
   char *id_pal;
   atrib atribute;
 } token;

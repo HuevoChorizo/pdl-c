@@ -1,4 +1,4 @@
-#include "tokens.h"
+#include "include/tokens.h"
 #include <ctype.h>
 #include <fcntl.h>
 #include <stdio.h>
@@ -20,13 +20,16 @@ tokens *resultado;
 
 int estadoerr(char *palabra) {
   resultado->tokenArr[conT].id_pal = "ERR";
+  resultado->tokenArr[conT].estado = -1;
   char *cadena = malloc(strlen(palabra) + 1 * sizeof(char));
   memcpy(cadena, palabra, strlen(palabra) + 1);
+  resultado->tokenArr[conT].atribute.valor = conTLin;
   resultado->tokenArr[conT++].atribute.cadena = cadena;
   return OK;
 }
 
 int estado4(char *palabra) {
+  resultado->tokenArr[conT].estado = 4;
   switch (palabra[0]) {
   case '=':
     resultado->tokenArr[conT].id_pal = "EQ";
@@ -85,6 +88,7 @@ int estado4(char *palabra) {
 }
 
 int estado5(char *palabra) {
+  resultado->tokenArr[conT].estado = 5;
   switch (palabra[0]) {
   case '/':
     if (palabra[1] == '*') {
@@ -133,6 +137,7 @@ int estado5(char *palabra) {
 }
 
 int estado6(char *palabra) {
+  resultado->tokenArr[conT].estado = 6;
   if ((strlen(palabra) - 2) <= 64) {
     char *cadena = malloc(strlen(palabra) + 1);
     memcpy(cadena, palabra, strlen(palabra) + 1);
@@ -144,6 +149,7 @@ int estado6(char *palabra) {
 }
 
 int estado7(char *palabra) {
+  resultado->tokenArr[conT].estado = 7;
   float aux;
   char *cadena = malloc(strlen(palabra) + 1 * sizeof(char));
   memcpy(cadena, palabra, strlen(palabra) + 1);
@@ -155,6 +161,7 @@ int estado7(char *palabra) {
 }
 
 int estado8(char *palabra) {
+  resultado->tokenArr[conT].estado = 8;
   int aux;
   char *cadena = malloc(strlen(palabra) + 1 * sizeof(char));
   memcpy(cadena, palabra, strlen(palabra) + 1);
@@ -166,6 +173,7 @@ int estado8(char *palabra) {
 }
 
 int estado9(char *palabra) {
+  resultado->tokenArr[conT].estado = 9;
   char *cadena = malloc(strlen(palabra) + 1 * sizeof(char));
   memcpy(cadena, palabra, strlen(palabra) + 1);
   resultado->tokenArr[conT].id_pal = "Var";
@@ -174,6 +182,7 @@ int estado9(char *palabra) {
 }
 
 int estado1(char *palabra, int f) {
+  resultado->tokenArr[conT].estado = 1;
   if (f == ESPAL) {
     return estado9(palabra);
   }
@@ -196,7 +205,7 @@ int estado1(char *palabra, int f) {
 }
 
 int estado2(char *palabra, int f) {
-
+  resultado->tokenArr[conT].estado = 2;
   if (strcmp(palabra, "boolean") == 0) {
     resultado->tokenArr[conT].id_pal = "BOOL";
     resultado->tokenArr[conT++].atribute.cadena = "-";
@@ -267,6 +276,7 @@ int estado2(char *palabra, int f) {
 }
 
 int estado3(char *palabra) {
+  resultado->tokenArr[conT].estado = 3;
   if (palabra[1] == '\0') {
     if (palabra[0] == '\n') {
       conTLin++;
@@ -287,6 +297,10 @@ int estado0(char *palabra, int f) {
     return estado2(palabra, f);
   return estado1(palabra, f);
 }
+
+/*TODO: Introducir que los strings y los comentarios de bloque terminan en \0 o
+ * en N\0. De terminar en la segunda opción guarda el este para un error
+ * específico y esas mierdas. */
 int start(char *palabra, int f) {
   int flag = f;
   if (flag == CMNTC)
@@ -295,7 +309,12 @@ int start(char *palabra, int f) {
   int j = 0;
   int i = 0;
   while (palabra[i] != '\0') {
-    if (isalnum(palabra[i]) || palabra[i] == '_' || palabra[i] == '.') {
+    if (palabra[i] == '\n') {
+      resultado->tokenArr[conT].id_pal = "salto";
+      resultado->tokenArr[conT++].atribute.cadena = "-";
+      conTLin++;
+      i++;
+    } else if (isalnum(palabra[i]) || palabra[i] == '_' || palabra[i] == '.') {
       paso[j++] = palabra[i++];
     } else if (j != 0 && !isalnum(palabra[i])) {
       paso[j] = '\0';
@@ -304,8 +323,9 @@ int start(char *palabra, int f) {
     } else if (palabra[i] == '/' && palabra[i + 1] == '*') {
       flag = estado3("/*");
       while (!(palabra[i] == '*' && palabra[i + 1] == '/')) {
-        if (palabra[i] == '\n')
+        if (palabra[i] == '\n') {
           conTLin++;
+        }
         i++;
       }
       flag = estado3("*/");
@@ -373,6 +393,7 @@ tokens *estados(char **palabra) {
   resultado->tokenArr[conT].id_pal = "EOF";
   resultado->tokenArr[conT++].atribute.cadena = "-";
   resultado->size = conT;
+  printf("Nº saltos de línea = %d\n", conTLin);
 
   resultado->tokenArr = realloc(resultado->tokenArr, (conT * sizeof(token)));
   return resultado;
