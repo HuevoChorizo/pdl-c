@@ -20,7 +20,6 @@ tokens *resultado;
 
 int estadoerr(char *palabra) {
   resultado->tokenArr[conT].id_pal = "ERR";
-  resultado->tokenArr[conT].estado = -1;
   char *cadena = malloc(strlen(palabra) + 1 * sizeof(char));
   memcpy(cadena, palabra, strlen(palabra) + 1);
   resultado->tokenArr[conT].atribute.valor = conTLin;
@@ -393,7 +392,7 @@ tokens *estados(char **palabra) {
   resultado->tokenArr[conT].id_pal = "EOF";
   resultado->tokenArr[conT++].atribute.cadena = "-";
   resultado->size = conT;
-  printf("Nº saltos de línea = %d\n", conTLin);
+  printf("Nº de líneas = %d\n", conTLin);
 
   resultado->tokenArr = realloc(resultado->tokenArr, (conT * sizeof(token)));
   return resultado;

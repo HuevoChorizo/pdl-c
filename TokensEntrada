@@ -1,18 +1,68 @@
-/* Programa de prueba completo
-fdsja f
-fdsafda
-*/
-"ahora me cago en dios \" \n"
+/* Programa de prueba completo */
 let int contador;
 let float pi;
 let string mensaje;
 let boolean activo;
 
-function int suma(,(int a, int b) {
+function int suma(int a, int b) {
     let int resultado;
     resultado = a + b;
     return resultado;
 }
 
+function void imprimir(string texto) {
+    write texto;
+}
 
+function float calcular(float x, float y) {
+    let float temp;
+    temp = x + y;
+    return temp;
+}
 
+/* Prueba de operadores */
+contador = 0;
+contador++;
+contador = contador + 1;
+
+/* Prueba de comparaciones */
+if (contador == 10) {
+    write 'El contador es 10';
+}
+
+if (activo != false) {
+    write 'Está activo';
+}
+
+/* Prueba de while */
+while (contador != 100) {
+    contador++;
+}
+
+/* Prueba de do-while */
+do {
+    read mensaje;
+} while (mensaje == 'continuar');
+
+/* Llamadas a funciones */
+suma(5, 3);
+imprimir('Hola mundo');
+pi = 3.14159;
+calcular(2.5, 3.7);
+
+/* Números */
+let int entero1;
+let int entero2;
+let float decimal1;
+let float decimal2;
+
+entero1 = 123;
+entero2 = 999999;
+decimal1 = 0.5;
+decimal2 = 123.456789;
+
+/* Identificadores válidos */
+let int _variable;
+let int variable123;
+let int var_con_guion_bajo;
+let int CamelCase;

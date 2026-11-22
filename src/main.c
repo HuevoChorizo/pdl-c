@@ -14,9 +14,9 @@ int liberar(tokens *a_liberar);
 int main() {
   /*Simplifica el autómata, y la comprensión de lo que realiza.*/
   char **desglosado = lector();
-  for (int i = 0; desglosado[i] != NULL; i++) {
+  /*for (int i = 0; desglosado[i] != NULL; i++) {
     printf("La palabra nº: %d es: %s\n", i, desglosado[i]);
-  }
+  } */
   tokens *a = estados(desglosado);
 
   if (a != NULL) {

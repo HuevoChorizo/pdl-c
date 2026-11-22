@@ -39,7 +39,8 @@ char **lector() {
 
   while (buf[i] != '\0') {
     /*TODO: si llega al final del fichero, o el siguiente es el final,
-     * básicamente, mete todo como una palabra, y tira palante. */
+     * básicamente, mete todo como una palabra, y tira palante;
+     * -> Hay que comprobar en estados.c si lo gestiono o no.*/
     if (s || buf[i] == '"') {
       if (buf[i] == '"' && i != 0 && buf[i - 1] != '\\' && s == 1) {
         s = 0;
@@ -57,7 +58,7 @@ char **lector() {
     } else if (cb || (buf[i] == '/' && buf[i + 1] == '*')) {
       if (buf[i] == '*' && buf[i + 1] == '/') {
         cb = 0;
-      } else if (buf[i + 2] == '\0') {
+      } else if (buf[i + 1] == '\0' || buf[i + 2] == '\0') {
         aux[k++] = '*';
         aux[k++] = '/';
         aux[k++] = 'N';
