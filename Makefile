@@ -1,8 +1,9 @@
 name=out
-#libs=
-CFLAGS=-Wall -Wextra -fsanitize=address #$(libs)
+libs=
+CFLAGS=-Wall -Wextra -fsanitize=address $(libs)
 SRCS=$(wildcard src/*.c)
 OBJS=$(SRCS:src/%.c=bin/%.o)
+CC=gcc
 
 main: CFLAGS+=
 main: min
@@ -16,6 +17,8 @@ min: $(OBJS)
 bin/%.o: src/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+bin:
+	mkdir -p bin
 
 clear:
 	if ! [ -d "bin/" ] ; then \

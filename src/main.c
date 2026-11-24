@@ -7,7 +7,7 @@
 #define ERROR_HILO 10
 #define ERROR_PIPES 11
 #define ERROR_FORK 12
-/* TODO: Mover a tipos.h */
+/*  TODO: Mover a tipos.h */
 typedef struct {
   int in;
   int *out;
@@ -17,6 +17,7 @@ typedef struct {
 
 #define N_HILOS 4
 
+/* Maybe we don't need this, it depends on what the attr default is*/
 int init_thread(pthread_attr_t *attr) {
   return pthread_attr_init(attr) != -1 &&
          pthread_attr_setdetachstate(attr, PTHREAD_CREATE_JOINABLE) != -1;
@@ -27,6 +28,11 @@ void kac(pthread_t *hilos) {
   for (i = 0; i < N_HILOS; i++)
     pthread_cancel(hilos[i]);
 }
+
+/* MAYBE: Extract pipe init, extract function and args init*/
+/* Quizás main no es main si no que es llamada por una función que hará algo con
+ * el retorno, se verá */
+/*  TODO: main args probly has fichero, functions prob from header */
 
 int main(void) {
   pthread_t hilos[N_HILOS];
