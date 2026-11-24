@@ -1,6 +1,5 @@
 #include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 /* TODO: Mover defines de Error a error.h */
@@ -37,7 +36,7 @@ int main(void) {
   int pipa3[2];
   pid_t pids[N_HILOS];
   threadArgs args[N_HILOS];
-  void (*functions[N_HILOS])();
+  void *(*functions[N_HILOS])(void *);
   /*PLACEHOLDERS*/
   char *fichero;
   void *hilo_lector;
@@ -81,9 +80,9 @@ int main(void) {
                          (void *)&args[i]) == -1)
         return ERROR_HILO;
 
-      int aux;
+      void *aux;
       pthread_join(hilos[i], &aux);
-      return aux;
+      return *((int *)aux);
     default:
       break;
     }
