@@ -393,7 +393,8 @@ tokens *estados(char **palabra) {
   resultado->tokenArr[conT++].atribute.cadena = "-";
   resultado->size = conT;
   printf("Nº de líneas = %d\n", conTLin);
-
   resultado->tokenArr = realloc(resultado->tokenArr, (conT * sizeof(token)));
   return resultado;
 }
+/*TODO: cambiar los strings de comillas dobles por comillas simples. */
+void entrada() {}

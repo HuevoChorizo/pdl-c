@@ -9,17 +9,6 @@
 
 char *p;
 
-/*NOTE: devuelve la diferencia*/
-/*NOTE: Tiene que copiar la funcionalidad del bucle de lector.*/
-int func(int i, char *aux) {
-  int j = 0;
-  int k = 0;
-  int s = 0;
-  int cb = 0;
-
-  return j;
-}
-
 int lectornuevo(char *ruta, char *palabra, int *pipe) {
   /*TODO: falta la gestión de la pipe, pero me da pereza*/
   struct stat bstat;
@@ -62,4 +51,84 @@ int lectornuevo(char *ruta, char *palabra, int *pipe) {
   /*TODO: comprobar el correcto cierre del mapa*/
 
   return OK;
+}
+
+/*NOTE: devuelve la diferencia*/
+/*NOTE: Tiene que copiar la funcionalidad del bucle de lector.*/
+/*TODO: Cambiar char *aux por un struct que contenga nº Línea, pos y el string*/
+int func(int i, char *aux) {
+  /*TODO: quizá, cambiar numLinea y posLinea, para que sean globales. */
+  int numLinea;
+  int posLinea;
+  int j = 0;
+  int k = 0;
+  int s = 0;
+  int cb = 0;
+  int f = 0;
+
+  while (!f) {
+    if (s || p[i + j] == '\'') {
+      if (p[i + j] == '\'' && i != 0 && s == 1) {
+        s = 0;
+        f = 1;
+
+      } else if (p[i + j + 2] == '\0') {
+        s = 0;
+        aux[k++] = '\'';
+        aux[k++] = 'N';
+        aux[k++] = '\0';
+        f = 1;
+      } else {
+        s = 1;
+      }
+      aux[k++] = p[i + j++];
+      posLinea++;
+      /*TODO: Gestionar saltos de línea dentro de los comentarios de bloque,
+       * para seguir aumenta las líneas, a medida que hay saltos en el CB.*/
+    } else if (cb || (p[i + j] == '/' && p[i + j] == '*')) {
+      if (p[i + j++] == '\n') {
+        numLinea++;
+        posLinea = 0;
+      }
+      if (p[i + j] == '*' && p[i + j + 1] == '/') {
+        cb = 0;
+        f = 1;
+      } else if (p[i + j + 1] == '\0' || p[i + j + 2] == '\0') {
+        aux[k++] = '*';
+        aux[k++] = '/';
+        aux[k++] = 'N';
+        aux[k++] = '\0';
+        cb = 0;
+        f = 1;
+      } else {
+        cb = 1;
+      }
+      aux[k++] = p[i + j++];
+      posLinea++;
+      if (!cb) {
+        aux[k++] = p[i + j++];
+        posLinea++;
+      }
+
+    } else if (p[i + j] == '\t') {
+      aux[k] = '\0';
+      f = 1;
+      j++;
+      posLinea++;
+    } else if (p[i + j] == ' ') {
+      aux[k] = '\0';
+      f = 1;
+      j++;
+      posLinea++;
+    } else if (p[i + j] == '\n') {
+      aux[k] = '\0';
+      f = 1;
+      numLinea++;
+    } else {
+      aux[k++] = p[i + j++];
+      posLinea++;
+    }
+  }
+  /*TODO: asignar posLinea y numLinea a los atributos del struct. */
+  return j;
 }

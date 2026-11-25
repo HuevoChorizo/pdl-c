@@ -6,4 +6,6 @@
 #define CRRDO 2
 char **lector();
 
+int func(int i, char *aux);
+
 #endif
